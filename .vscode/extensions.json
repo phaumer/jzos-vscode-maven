@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "zowe.vscode-extension-for-zowe",
+        "vscjava.vscode-java-pack",
+        "SonarSource.sonarlint-vscode",
+        "redhat.vscode-xml",
+        "bierner.docs-view",
+        "rioj7.command-variable",
+        "spmeesseman.vscode-taskexplorer",
+    ]
+}

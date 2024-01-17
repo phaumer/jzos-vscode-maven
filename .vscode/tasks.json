@@ -1,0 +1,48 @@
+/*******************************************************************************
+ * Licensed Materials - Property of IBM
+ * (C) Copyright IBM Corporation 2024. All Rights Reserved.
+ *
+ * Note to U.S. Government Users Restricted Rights:
+ * Use, duplication or disclosure restricted by GSA ADP Schedule
+ * Contract with IBM Corp.
+ *******************************************************************************/
+{
+	"version": "2.0.0",
+	"inputs": [
+		{
+			"type": "command",
+			"id": "targetFile",
+			"command": "extension.commandvariable.file.pickFile",
+			"args": {
+				"description": "Select a jar file to run",
+				"include": "target/*.jar",
+				"transform": {
+					"text": "${file}",
+					"find": "\\\\",
+					"replace": "/",
+					"flags": "g"
+				}
+			}
+		},
+		{
+			"type": "promptString",
+			"id": "programInput",
+			"description": "Program input",
+			"default": "\"//SAMPLE.COBOL\""
+		}
+	],
+	"tasks": [
+		{
+			"label": "Run Java program on z/OS",
+			"type": "shell",
+			"command": "scripts/run-zos.sh \"${input:targetFile}\" ${input:programInput}",
+			"problemMatcher": []
+		},
+		{
+			"label": "Debug Java program on z/OS",
+			"type": "shell",
+			"command": "scripts/run-zos.sh \"${input:targetFile}\" ${input:programInput} debug=true",
+			"problemMatcher": []
+		}
+	]
+}
