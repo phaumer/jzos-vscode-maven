@@ -1,0 +1,44 @@
+################################################################
+# LICENSED MATERIALS - PROPERTY OF IBM
+# "RESTRICTED MATERIALS OF IBM"
+# (C) COPYRIGHT IBM CORPORATION 2024. ALL RIGHTS RESERVED
+# US GOVERNMENT USERS RESTRICTED RIGHTS - USE, DUPLICATION,
+# OR DISCLOSURE RESTRICTED BY GSA ADP SCHEDULE
+# CONTRACT WITH IBM CORPORATION
+################################################################
+
+---
+- name: Run java sample
+  hosts: "{{ host | default('server') }}"
+  vars:
+    debug_option: "{{ '-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8000' if debug | bool else None }}"
+    remote_program: "/u/{{ ansible_user }}/projects/java/{{ target_file | basename }}"
+  gather_facts: false
+  tasks:
+    # Upload of jar file to z/OS using Zowe CLI
+    - name: Upload Jar File to z/OS
+      ibm.ibm_zos_core.zos_copy:
+        src: "{{ playbook_dir }}../../../target/jzos-samples-1.0-SNAPSHOT.jar"
+        dest: "/u/{{ ansible_user }}/projects/java"
+        is_binary: true
+        mode: u+rwx
+
+    # Show which port the server is running on
+    - name: Show Port Server Is Running On
+      ansible.builtin.debug:
+        msg: "Listening for transport dt_socket at address: 8000"
+      when: debug | bool
+
+    # Start Java application in z/OS
+    - name: Start Java Application
+      ansible.builtin.shell:
+        cmd: '. /u/{{ ansible_user | quote }}/.profile && java {{ debug_option }} -jar "{{ remote_program | quote }}" "{{ program_input | quote }}"'
+        chdir: "/u/{{ ansible_user | quote }}"
+        executable: /bin/bash
+      register: report
+      changed_when: report.rc == 0
+
+    # Show output of Java
+    - name: Show output
+      ansible.builtin.debug:
+        var: report.stdout_lines

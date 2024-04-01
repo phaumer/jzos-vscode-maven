@@ -1,12 +1,12 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Debug (Attach to z/OS)",
-            "request": "attach",
-            "hostName": "10.244.64.16", // replace with your z/OS system's IP
-            "port": 8000
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug (Attach to z/OS)",
+      "request": "attach",
+      "hostName": "example.com", // replace with your z/OS system's IP
+      "port": 8000
+    }
+  ]
 }
