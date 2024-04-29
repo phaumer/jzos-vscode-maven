@@ -1,10 +1,16 @@
 /*
  * %Z%%W% %I%
- *
- * =========================================================================
+ * ===========================================================================
+ * IBM Confidential
+ * OCO Source Materials
  * Licensed Materials - Property of IBM
- * "Restricted Materials of IBM"
- * (C) Copyright IBM Corp. 2007. All Rights Reserved
+ * IBM Semeru Runtime Certified Edition for z/OS
+ *
+ * (C) Copyright IBM Corp. 2007, 2023
+ *
+ * The source code for this program is not published or otherwise divested of
+ * its trade secrets, irrespective of what has been deposited with the U.S.
+ * Copyright Office.
  * 
  * DISCLAIMER: 
  * The following [enclosed] code is sample code created by IBM 
@@ -61,7 +67,7 @@ public class Format5Extent {
 
 	public int getFirsttrk() {
 		if (firsttrk == null) {
-			firsttrk = new Integer(FIRSTTRK.getInt(bytes, bufOffset));
+			firsttrk = Integer.valueOf(FIRSTTRK.getInt(bytes, bufOffset));
 		}
 		return firsttrk.intValue();
 	}
@@ -70,12 +76,12 @@ public class Format5Extent {
 		if (FIRSTTRK.equals(this.firsttrk, firsttrk))
 			return;
 		FIRSTTRK.putInt(firsttrk, bytes, bufOffset);
-		this.firsttrk = new Integer(firsttrk);
+		this.firsttrk = Integer.valueOf(firsttrk);
 	}
 
 	public int getUnusedcyl() {
 		if (unusedcyl == null) {
-			unusedcyl = new Integer(UNUSEDCYL.getInt(bytes, bufOffset));
+			unusedcyl = Integer.valueOf(UNUSEDCYL.getInt(bytes, bufOffset));
 		}
 		return unusedcyl.intValue();
 	}
@@ -84,12 +90,12 @@ public class Format5Extent {
 		if (UNUSEDCYL.equals(this.unusedcyl, unusedcyl))
 			return;
 		UNUSEDCYL.putInt(unusedcyl, bytes, bufOffset);
-		this.unusedcyl = new Integer(unusedcyl);
+		this.unusedcyl = Integer.valueOf(unusedcyl);
 	}
 
 	public int getUnusedtrk() {
 		if (unusedtrk == null) {
-			unusedtrk = new Integer(UNUSEDTRK.getInt(bytes, bufOffset));
+			unusedtrk = Integer.valueOf(UNUSEDTRK.getInt(bytes, bufOffset));
 		}
 		return unusedtrk.intValue();
 	}
@@ -98,7 +104,7 @@ public class Format5Extent {
 		if (UNUSEDTRK.equals(this.unusedtrk, unusedtrk))
 			return;
 		UNUSEDTRK.putInt(unusedtrk, bytes, bufOffset);
-		this.unusedtrk = new Integer(unusedtrk);
+		this.unusedtrk = Integer.valueOf(unusedtrk);
 	}
 
 }

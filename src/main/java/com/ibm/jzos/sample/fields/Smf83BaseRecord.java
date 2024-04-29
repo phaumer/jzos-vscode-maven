@@ -1,10 +1,16 @@
 /*
  * %Z%%W% %I%
- *
- * =========================================================================
+ * ===========================================================================
+ * IBM Confidential
+ * OCO Source Materials
  * Licensed Materials - Property of IBM
- * "Restricted Materials of IBM"
- * Copyright IBM Corp. 2007. All Rights Reserved
+ * IBM Semeru Runtime Certified Edition for z/OS
+ *
+ * (C) Copyright IBM Corp. 2007, 2023
+ *
+ * The source code for this program is not published or otherwise divested of
+ * its trade secrets, irrespective of what has been deposited with the U.S.
+ * Copyright Office.
  * 
  * DISCLAIMER: 
  * The following [enclosed] code is sample code created by IBM 
@@ -14,7 +20,7 @@
  * without warranty of any kind.  IBM shall not be liable for any damages 
  * arising out of your use of the sample code, even if they have been 
  * advised of the possibility of such damages.
- * =========================================================================
+ * ===========================================================================
  */
 package com.ibm.jzos.sample.fields;
 import com.ibm.jzos.fields.*;
@@ -178,7 +184,7 @@ public class Smf83BaseRecord {
 
 	public int getSmf83len() {
 		if (smf83len == null) {
-			smf83len = new Integer(SMF83LEN.getInt(bytes));
+			smf83len = Integer.valueOf(SMF83LEN.getInt(bytes));
 		}
 		return smf83len.intValue();
 	}
@@ -187,12 +193,12 @@ public class Smf83BaseRecord {
 		if (SMF83LEN.equals(this.smf83len, smf83len))
 			return;
 		SMF83LEN.putInt(smf83len, bytes);
-		this.smf83len = new Integer(smf83len);
+		this.smf83len = Integer.valueOf(smf83len);
 	}
 
 	public int getSmf83seg() {
 		if (smf83seg == null) {
-			smf83seg = new Integer(SMF83SEG.getInt(bytes));
+			smf83seg = Integer.valueOf(SMF83SEG.getInt(bytes));
 		}
 		return smf83seg.intValue();
 	}
@@ -201,12 +207,12 @@ public class Smf83BaseRecord {
 		if (SMF83SEG.equals(this.smf83seg, smf83seg))
 			return;
 		SMF83SEG.putInt(smf83seg, bytes);
-		this.smf83seg = new Integer(smf83seg);
+		this.smf83seg = Integer.valueOf(smf83seg);
 	}
 
 	public int getSmf83flg() {
 		if (smf83flg == null) {
-			smf83flg = new Integer(SMF83FLG.getInt(bytes));
+			smf83flg = Integer.valueOf(SMF83FLG.getInt(bytes));
 		}
 		return smf83flg.intValue();
 	}
@@ -215,12 +221,12 @@ public class Smf83BaseRecord {
 		if (SMF83FLG.equals(this.smf83flg, smf83flg))
 			return;
 		SMF83FLG.putInt(smf83flg, bytes);
-		this.smf83flg = new Integer(smf83flg);
+		this.smf83flg = Integer.valueOf(smf83flg);
 	}
 
 	public int getSmf83rty() {
 		if (smf83rty == null) {
-			smf83rty = new Integer(SMF83RTY.getInt(bytes));
+			smf83rty = Integer.valueOf(SMF83RTY.getInt(bytes));
 		}
 		return smf83rty.intValue();
 	}
@@ -229,12 +235,12 @@ public class Smf83BaseRecord {
 		if (SMF83RTY.equals(this.smf83rty, smf83rty))
 			return;
 		SMF83RTY.putInt(smf83rty, bytes);
-		this.smf83rty = new Integer(smf83rty);
+		this.smf83rty = Integer.valueOf(smf83rty);
 	}
 
 	public long getSmf83tme() {
 		if (smf83tme == null) {
-			smf83tme = new Long(SMF83TME.getLong(bytes));
+			smf83tme = Long.valueOf(SMF83TME.getLong(bytes));
 		}
 		return smf83tme.longValue();
 	}
@@ -243,12 +249,12 @@ public class Smf83BaseRecord {
 		if (SMF83TME.equals(this.smf83tme, smf83tme))
 			return;
 		SMF83TME.putLong(smf83tme, bytes);
-		this.smf83tme = new Long(smf83tme);
+		this.smf83tme = Long.valueOf(smf83tme);
 	}
 
 	public int getSmf83dte() {
 		if (smf83dte == null) {
-			smf83dte = new Integer(SMF83DTE.getInt(bytes));
+			smf83dte = Integer.valueOf(SMF83DTE.getInt(bytes));
 		}
 		return smf83dte.intValue();
 	}
@@ -257,7 +263,7 @@ public class Smf83BaseRecord {
 		if (SMF83DTE.equals(this.smf83dte, smf83dte))
 			return;
 		SMF83DTE.putInt(smf83dte, bytes);
-		this.smf83dte = new Integer(smf83dte);
+		this.smf83dte = Integer.valueOf(smf83dte);
 	}
 
 	public String getSmf83sid() {
@@ -304,7 +310,7 @@ public class Smf83BaseRecord {
 
 	public int getSmf83typ() {
 		if (smf83typ == null) {
-			smf83typ = new Integer(SMF83TYP.getInt(bytes));
+			smf83typ = Integer.valueOf(SMF83TYP.getInt(bytes));
 		}
 		return smf83typ.intValue();
 	}
@@ -313,7 +319,7 @@ public class Smf83BaseRecord {
 		if (SMF83TYP.equals(this.smf83typ, smf83typ))
 			return;
 		SMF83TYP.putInt(smf83typ, bytes);
-		this.smf83typ = new Integer(smf83typ);
+		this.smf83typ = Integer.valueOf(smf83typ);
 	}
 
 	public byte[] getSmf83sds() {
@@ -332,7 +338,7 @@ public class Smf83BaseRecord {
 
 	public int getSmf83trp() {
 		if (smf83trp == null) {
-			smf83trp = new Integer(SMF83TRP.getInt(bytes));
+			smf83trp = Integer.valueOf(SMF83TRP.getInt(bytes));
 		}
 		return smf83trp.intValue();
 	}
@@ -341,12 +347,12 @@ public class Smf83BaseRecord {
 		if (SMF83TRP.equals(this.smf83trp, smf83trp))
 			return;
 		SMF83TRP.putInt(smf83trp, bytes);
-		this.smf83trp = new Integer(smf83trp);
+		this.smf83trp = Integer.valueOf(smf83trp);
 	}
 
 	public int getSmf83xxx() {
 		if (smf83xxx == null) {
-			smf83xxx = new Integer(SMF83XXX.getInt(bytes));
+			smf83xxx = Integer.valueOf(SMF83XXX.getInt(bytes));
 		}
 		return smf83xxx.intValue();
 	}
@@ -355,12 +361,12 @@ public class Smf83BaseRecord {
 		if (SMF83XXX.equals(this.smf83xxx, smf83xxx))
 			return;
 		SMF83XXX.putInt(smf83xxx, bytes);
-		this.smf83xxx = new Integer(smf83xxx);
+		this.smf83xxx = Integer.valueOf(smf83xxx);
 	}
 
 	public long getSmf83opd() {
 		if (smf83opd == null) {
-			smf83opd = new Long(SMF83OPD.getLong(bytes));
+			smf83opd = Long.valueOf(SMF83OPD.getLong(bytes));
 		}
 		return smf83opd.longValue();
 	}
@@ -369,12 +375,12 @@ public class Smf83BaseRecord {
 		if (SMF83OPD.equals(this.smf83opd, smf83opd))
 			return;
 		SMF83OPD.putLong(smf83opd, bytes);
-		this.smf83opd = new Long(smf83opd);
+		this.smf83opd = Long.valueOf(smf83opd);
 	}
 
 	public int getSmf83lpd() {
 		if (smf83lpd == null) {
-			smf83lpd = new Integer(SMF83LPD.getInt(bytes));
+			smf83lpd = Integer.valueOf(SMF83LPD.getInt(bytes));
 		}
 		return smf83lpd.intValue();
 	}
@@ -383,12 +389,12 @@ public class Smf83BaseRecord {
 		if (SMF83LPD.equals(this.smf83lpd, smf83lpd))
 			return;
 		SMF83LPD.putInt(smf83lpd, bytes);
-		this.smf83lpd = new Integer(smf83lpd);
+		this.smf83lpd = Integer.valueOf(smf83lpd);
 	}
 
 	public int getSmf83npd() {
 		if (smf83npd == null) {
-			smf83npd = new Integer(SMF83NPD.getInt(bytes));
+			smf83npd = Integer.valueOf(SMF83NPD.getInt(bytes));
 		}
 		return smf83npd.intValue();
 	}
@@ -397,12 +403,12 @@ public class Smf83BaseRecord {
 		if (SMF83NPD.equals(this.smf83npd, smf83npd))
 			return;
 		SMF83NPD.putInt(smf83npd, bytes);
-		this.smf83npd = new Integer(smf83npd);
+		this.smf83npd = Integer.valueOf(smf83npd);
 	}
 
 	public long getSmf83od1() {
 		if (smf83od1 == null) {
-			smf83od1 = new Long(SMF83OD1.getLong(bytes));
+			smf83od1 = Long.valueOf(SMF83OD1.getLong(bytes));
 		}
 		return smf83od1.longValue();
 	}
@@ -411,12 +417,12 @@ public class Smf83BaseRecord {
 		if (SMF83OD1.equals(this.smf83od1, smf83od1))
 			return;
 		SMF83OD1.putLong(smf83od1, bytes);
-		this.smf83od1 = new Long(smf83od1);
+		this.smf83od1 = Long.valueOf(smf83od1);
 	}
 
 	public int getSmf83ld1() {
 		if (smf83ld1 == null) {
-			smf83ld1 = new Integer(SMF83LD1.getInt(bytes));
+			smf83ld1 = Integer.valueOf(SMF83LD1.getInt(bytes));
 		}
 		return smf83ld1.intValue();
 	}
@@ -425,12 +431,12 @@ public class Smf83BaseRecord {
 		if (SMF83LD1.equals(this.smf83ld1, smf83ld1))
 			return;
 		SMF83LD1.putInt(smf83ld1, bytes);
-		this.smf83ld1 = new Integer(smf83ld1);
+		this.smf83ld1 = Integer.valueOf(smf83ld1);
 	}
 
 	public int getSmf83nd1() {
 		if (smf83nd1 == null) {
-			smf83nd1 = new Integer(SMF83ND1.getInt(bytes));
+			smf83nd1 = Integer.valueOf(SMF83ND1.getInt(bytes));
 		}
 		return smf83nd1.intValue();
 	}
@@ -439,12 +445,12 @@ public class Smf83BaseRecord {
 		if (SMF83ND1.equals(this.smf83nd1, smf83nd1))
 			return;
 		SMF83ND1.putInt(smf83nd1, bytes);
-		this.smf83nd1 = new Integer(smf83nd1);
+		this.smf83nd1 = Integer.valueOf(smf83nd1);
 	}
 
 	public long getSmf83od2() {
 		if (smf83od2 == null) {
-			smf83od2 = new Long(SMF83OD2.getLong(bytes));
+			smf83od2 = Long.valueOf(SMF83OD2.getLong(bytes));
 		}
 		return smf83od2.longValue();
 	}
@@ -453,12 +459,12 @@ public class Smf83BaseRecord {
 		if (SMF83OD2.equals(this.smf83od2, smf83od2))
 			return;
 		SMF83OD2.putLong(smf83od2, bytes);
-		this.smf83od2 = new Long(smf83od2);
+		this.smf83od2 = Long.valueOf(smf83od2);
 	}
 
 	public int getSmf83ld2() {
 		if (smf83ld2 == null) {
-			smf83ld2 = new Integer(SMF83LD2.getInt(bytes));
+			smf83ld2 = Integer.valueOf(SMF83LD2.getInt(bytes));
 		}
 		return smf83ld2.intValue();
 	}
@@ -467,12 +473,12 @@ public class Smf83BaseRecord {
 		if (SMF83LD2.equals(this.smf83ld2, smf83ld2))
 			return;
 		SMF83LD2.putInt(smf83ld2, bytes);
-		this.smf83ld2 = new Integer(smf83ld2);
+		this.smf83ld2 = Integer.valueOf(smf83ld2);
 	}
 
 	public int getSmf83nd2() {
 		if (smf83nd2 == null) {
-			smf83nd2 = new Integer(SMF83ND2.getInt(bytes));
+			smf83nd2 = Integer.valueOf(SMF83ND2.getInt(bytes));
 		}
 		return smf83nd2.intValue();
 	}
@@ -481,7 +487,7 @@ public class Smf83BaseRecord {
 		if (SMF83ND2.equals(this.smf83nd2, smf83nd2))
 			return;
 		SMF83ND2.putInt(smf83nd2, bytes);
-		this.smf83nd2 = new Integer(smf83nd2);
+		this.smf83nd2 = Integer.valueOf(smf83nd2);
 	}
 
 }

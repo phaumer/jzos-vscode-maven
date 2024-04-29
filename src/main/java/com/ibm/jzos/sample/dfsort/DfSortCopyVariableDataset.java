@@ -4,7 +4,7 @@
  * =========================================================================
  * Licensed Materials - Property of IBM
  * "Restricted Materials of IBM"
- * (C) Copyright IBM Corp. 2007. All Rights Reserved
+ * (C) Copyright IBM Corp. 2007,2024. All Rights Reserved
  * 
  * DISCLAIMER: 
  * The following [enclosed] code is sample code created by IBM 
@@ -124,8 +124,8 @@ public class DfSortCopyVariableDataset {
 		}
 
 		if (rc != 0 || dfsortArgs.getLogLevel() >= 0) {
-			List stderrLines = dfSort.getStderrLines();
-			for (Iterator i=stderrLines.iterator(); i.hasNext(); ) {
+			List<?> stderrLines = dfSort.getStderrLines();
+			for (Iterator<?> i=stderrLines.iterator(); i.hasNext(); ) {
 				System.err.println(i.next());
 			}
 		}

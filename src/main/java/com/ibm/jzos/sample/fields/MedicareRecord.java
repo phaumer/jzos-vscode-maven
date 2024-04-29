@@ -1,10 +1,16 @@
 /*
  * %Z%%W% %I%
- *
- * =========================================================================
+ * ===========================================================================
+ * IBM Confidential
+ * OCO Source Materials
  * Licensed Materials - Property of IBM
- * "Restricted Materials of IBM"
- * (C) Copyright IBM Corp. 2005. All Rights Reserved
+ * IBM Semeru Runtime Certified Edition for z/OS
+ *
+ * (C) Copyright IBM Corp. 2005, 2023
+ *
+ * The source code for this program is not published or otherwise divested of
+ * its trade secrets, irrespective of what has been deposited with the U.S.
+ * Copyright Office.
  * 
  * DISCLAIMER: 
  * The following [enclosed] code is sample code created by IBM 
@@ -19,6 +25,9 @@
 package com.ibm.jzos.sample.fields;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+
 
 import com.ibm.jzos.fields.BinaryAsIntField;
 import com.ibm.jzos.fields.BinaryAsLongField;

@@ -1,10 +1,16 @@
 /*
  * %Z%%W% %I%
- *
- * =========================================================================
+ * ===========================================================================
+ * IBM Confidential
+ * OCO Source Materials
  * Licensed Materials - Property of IBM
- * "Restricted Materials of IBM"
- * (C) Copyright IBM Corp. 2007. All Rights Reserved
+ * IBM Semeru Runtime Certified Edition for z/OS
+ *
+ * (C) Copyright IBM Corp. 2007, 2023
+ *
+ * The source code for this program is not published or otherwise divested of
+ * its trade secrets, irrespective of what has been deposited with the U.S.
+ * Copyright Office.
  * 
  * DISCLAIMER: 
  * The following [enclosed] code is sample code created by IBM 
@@ -14,7 +20,7 @@
  * without warranty of any kind.  IBM shall not be liable for any damages 
  * arising out of your use of the sample code, even if they have been 
  * advised of the possibility of such damages.
- * =========================================================================
+ * ===========================================================================
  */
 package com.ibm.jzos.sample.fields;
 import com.ibm.jzos.fields.*;
@@ -102,7 +108,7 @@ public class Format5DSCBBase {
 
 	public long getDs5keyid() {
 		if (ds5keyid == null) {
-			ds5keyid = new Long(DS5KEYID.getLong(bytes, bufOffset));
+			ds5keyid = Long.valueOf(DS5KEYID.getLong(bytes, bufOffset));
 		}
 		return ds5keyid.longValue();
 	}
@@ -111,7 +117,7 @@ public class Format5DSCBBase {
 		if (DS5KEYID.equals(this.ds5keyid, ds5keyid))
 			return;
 		DS5KEYID.putLong(ds5keyid, bytes, bufOffset);
-		this.ds5keyid = new Long(ds5keyid);
+		this.ds5keyid = Long.valueOf(ds5keyid);
 	}
 
 	public byte[] getDs5avext() {
