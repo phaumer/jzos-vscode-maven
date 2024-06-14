@@ -1,0 +1,23 @@
+###############################################################################
+# Licensed Materials - Property of IBM
+# (c) Copyright IBM Corporation 2024. All Rights Reserved.
+#
+# Note to U.S. Government Users Restricted Rights:
+# Use, duplication or disclosure restricted by GSA ADP Schedule
+# Contract with IBM Corp.
+###############################################################################
+
+################################################################################
+# Description of the properties used in this configuration:
+# - Property `ansible_host` is the z/OS managed node (target),
+#    e.g, ansible_host: "example.com"
+# - Property `ansible_user` is the z/OS managed user to connect and run as over SSH,
+#    e.g, ansible_user: "user"
+################################################################################
+
+source_system:
+  hosts:
+    server:
+      ansible_user: user
+      ansible_host: example.com
+      ansible_port: 22

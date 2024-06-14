@@ -1,5 +1,6 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "editor.formatOnSave": true,
-    "java.dependency.packagePresentation": "hierarchical"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "editor.formatOnSave": true,
+  "java.dependency.packagePresentation": "hierarchical",
+  "ansible.python.interpreterPath": "/usr/local/bin/python3"
 }
