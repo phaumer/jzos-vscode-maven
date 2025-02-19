@@ -1,0 +1,54 @@
+#!/bin/sh
+
+convert_if_required()
+{
+  file="${1}"
+
+  file_cp=$(/bin/ls -T "${file}" | awk ' { print $2; }')
+  if [ "${file_cp}" != "ISO8859-1" ]; then
+    txt=$(iconv -f "${file_cp}" -t "ISO8859-1" < "${file}" )
+    echo "${txt}" >"${file}"
+    chtag -tcISO8859-1 "${file}"
+  fi
+}
+#
+# This script requires tight hand-shaking with grub_client
+# for parameter passing from the client to the server
+#
+
+server_root="$1"
+repo="$2"
+active_branch="$3"
+oef_dir="$4"
+bld_out="$5"
+bld_err="$6"
+
+ME=$(basename $0)
+MYDIR="$(cd "$(dirname "$0")" > /dev/null 2>&1 && pwd -P)"
+
+#
+# Add the oef_dir (Open Enterprise Foundation) directory 
+# for this server to the PATH so that bash and git can be located.
+#
+
+if [ -d "${oef_dir}" ] ; then
+  export PATH="${oef_dir}:$PATH"
+else
+  echo "Unable to set up Open Enterprise Foundation PATH with ${oef_dir}" >&2
+  exit 4
+fi
+
+export _BPXK_AUTOCVT=ON
+export _CEE_RUNOPTS="$_CEE_RUNOPTS FILETAG(AUTOCVT,AUTOTAG)"
+export _TAG_REDIR_ERR=txt
+export _TAG_REDIR_IN=txt
+export _TAG_REDIR_OUT=txt
+
+#
+# We call a second script to do the 'real' work and
+# redirect the stdout and stderr to files so the client 
+# can then download the output
+#
+bash "${MYDIR}/grub_server.bash" "${server_root}" "${repo}" "${active_branch}" >"${bld_out}" 2>"${bld_err}"
+convert_if_required "${bld_out}"
+convert_if_required "${bld_err}"

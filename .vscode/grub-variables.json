@@ -1,0 +1,7 @@
+{
+  "serverRoot": "'$HOME/projects'",
+  "server": "10.244.64.22",
+  "clientBuildTool": "$HOME/Dev/WCA4Z/jzos-maven/scripts/grub_client.sh",
+  "serverBuildTool": "'$HOME/projects/grub/bin/grub_server.sh'",
+  "serverGitDir": "/rsusr/ported/bin"
+}

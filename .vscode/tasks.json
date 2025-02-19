@@ -29,20 +29,90 @@
 			"id": "programInput",
 			"description": "Program input",
 			"default": "\"//SAMPLE.COBOL\""
+		},
+		{
+			"id": "grubClientBuildTool",
+			"type": "command",
+			"command": "extension.commandvariable.file.content",
+			"args": {
+				"fileName": "${workspaceFolder}/.vscode/grub-variables.json",
+				"json": "content.clientBuildTool"
+			}
+		},
+		{
+			"id": "grubServerRoot",
+			"type": "command",
+			"command": "extension.commandvariable.file.content",
+			"args": {
+				"fileName": "${workspaceFolder}/.vscode/grub-variables.json",
+				"json": "content.serverRoot"
+			}
+		},
+		{
+			"id": "grubServer",
+			"type": "command",
+			"command": "extension.commandvariable.file.content",
+			"args": {
+				"fileName": "${workspaceFolder}/.vscode/grub-variables.json",
+				"json": "content.server"
+			}
+		},
+		{
+			"id": "grubBuildTool",
+			"type": "command",
+			"command": "extension.commandvariable.file.content",
+			"args": {
+				"fileName": "${workspaceFolder}/.vscode/grub-variables.json",
+				"json": "content.serverBuildTool"
+			}
+		},
+		{
+			"id": "grubServerGitDir",
+			"type": "command",
+			"command": "extension.commandvariable.file.content",
+			"args": {
+				"fileName": "${workspaceFolder}/.vscode/grub-variables.json",
+				"json": "content.serverGitDir"
+			}
 		}
 	],
 	"tasks": [
 		{
-			"label": "Run Java program on z/OS",
+			"label": "Run Java program on z/OS with Zowe",
 			"type": "shell",
 			"command": "scripts/run-zos.sh \"${input:targetFile}\" ${input:programInput}",
 			"problemMatcher": []
 		},
 		{
-			"label": "Debug Java program on z/OS",
+			"label": "Debug Java program on z/OS with Zowe",
 			"type": "shell",
 			"command": "scripts/run-zos.sh \"${input:targetFile}\" ${input:programInput} debug=true",
 			"problemMatcher": []
+		},
+		{
+			"label": "GRUB",
+			"type": "shell",
+			"command": "${input:grubClientBuildTool} ${workspaceFolder} ${input:grubServerRoot} ${input:grubServer} ${fileWorkspaceFolderBasename} ${input:grubBuildTool} ${input:grubServerGitDir}",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": {
+				"owner": "java",
+				"fileLocation": [
+					"relative",
+					"${workspaceFolder}"
+				],
+				"source": "xlc",
+				"pattern": {
+					"regexp": "^(WARNING|ERROR|INFORMATIONAL)\\s+[A-Z0-9]*\\s+(.*):(\\d+)\\s+(.*)$",
+					"file": 2,
+					"line": 3,
+					"column": 5,
+					"severity": 1,
+					"message": 4
+				}
+			}
 		}
 	]
 }

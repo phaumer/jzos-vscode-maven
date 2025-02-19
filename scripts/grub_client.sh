@@ -1,0 +1,285 @@
+#!/bin/sh
+
+# grub_client: grub --help for syntax
+
+syntax()
+{
+  echo "\
+Usage: grub_client [options] <client root> <server root> <server> <repo> <server build tool> <server Open Enterprise Foundation (OEF) dir>\n\
+Options:\n\
+  -v | --verbose : print verbose output\n\
+  -h | --help    : print this usage information\n\
+Example:\n\
+  To run a git remote user build, synchronizing the git repo asmdio under \$HOME/Documents/Development\n\
+   to /u/fultonm/development on the ssh host fultonm_zos\n\
+   and then run the remote build program /u/fultonm/tools/grub/bin/grub_server using the remote 'git' at /usr/lpp/IBM/foz/v1r1\n\
+  grub_client \$HOME/Documents/Development /u/fultonm/development fultonm_zos asmdio /u/fultonm/grub/bin/grub_server /usr/lpp/IBM/foz/v1r1/bin\n\
+where:\n\
+  0: this program      grub_client\n\
+  1: client_root       \$HOME/Documents/Development\n\
+  2: server_root       /u/fultonm/development\n\
+  3: server            fultonm_zos\n\
+  4: repo              asmdio\n\
+  5: server_build_tool /u/fultonm/grub/bin/grub_server\n\
+  6: server_oef_dir    /usr/lpp/IBM/foz/v1r1/bin\n\
+Note:\n\
+  grub_client uses git and ssh to communicate with the remote server.\n\
+  ssh should be configured with a public/private key and use a Host specification that includes at least a HostName and User specification.\n\
+" >&2
+}
+
+reset_head()
+{
+  commit=$1
+  active_origin_url=$2
+
+  # switch back to original before commit if changes made
+  if [ $commit -eq 1 ]; then
+    git reset 'HEAD^1' >/dev/null
+    if [ $? -gt 0 ]; then
+      echo "Problems trying to reset ${active_branch} to undo dummy 'commit'. Use git log to see what happened." >&2
+      exit 4
+    fi
+  fi
+
+  # switch back to origin url that was active before build
+  git config remote.origin.url "${active_origin_url}"
+  if [ $? -gt 0 ]; then
+    echo "Problems trying to update remote.origin.url to ${active_origin_url}" >&2
+    exit 4
+  fi
+  git config "branch.${active_branch}.remote" "${active_origin_url}"
+  if [ $? -gt 0 ]; then
+    echo "Problems trying to update branch.${active_branch}.remote to ${active_origin_url}" >&2
+    exit 4
+  fi 
+}
+
+vecho()
+{
+  if ${verbose}; then
+    echo "$*"
+  fi
+}
+
+#set -x
+
+if [ "$1" = "-v" ] || [ "$1" = "verbose" ]; then
+  verbose=True
+  shift 1
+else
+  verbose=False
+fi
+
+client_root=$1
+server_root=$2
+server=$3
+repo=$4
+remote_build_tool=$5
+remote_oef_dir=$6
+
+if [[ $# -ne 6 ]]; then
+  syntax
+  exit 4
+fi
+
+if ! [ -d "${client_root}" ]; then
+  echo "${client_root} is not a directory." >&2
+  exit 8
+fi
+
+if ! cd "${client_root}" ; then
+  echo "Unable to change into ${client_root} directory." >&2
+  exit 8
+fi
+
+#
+# If this is being driven from VSCode, and a multi-root workspace is being used
+# then the 'client root' is actually the root of the workspace, not the root of 
+# the repository, which is what we want.
+# Fix the variable and normalize it too
+#
+
+client_root="${client_root}/../${repo}"
+if ! cd "${client_root}" ; then
+  echo "Unable to change into ${client_root} directory." >&2
+  exit 8
+fi
+
+client_root=$(cd "${client_root}" > /dev/null 2>&1 && pwd -P)
+
+vecho "Start:" $(date)
+seconds_start=$(date '+%s')
+
+active_origin_url=$(git config --get remote.origin.url)
+if [ "${active_origin_url}" = '' ]; then
+  echo "Unable to retrieve current remote origin url" >&2
+  exit 4
+fi
+
+url=$(git config --get "remote.${server}_${repo}.url")
+if [ "${url}" = '' ]; then
+  git remote add "${server}_${repo}" "${server}:${server_root}/${repo}"
+  if [ $? -gt 0 ]; then
+    echo "Unable to set url for ${server}_${repo}" >&2
+    exit 4
+  fi
+fi
+
+uploadpack=$(git config --get "remote.${server}_${repo}.uploadpack")
+if [ "${uploadpack}" = '' ]; then
+  git config --add "remote.${server}_${repo}.uploadpack" "${remote_oef_dir}/git-upload-pack"
+  if [ $? -gt 0 ]; then
+    echo "Unable to add configuration for remote.${server}_${repo}.uploadpack" >&2
+    exit 4
+  fi
+fi
+receivepack=$(git config --get "remote.${server}_${repo}.receivepack")
+if [ "${receivepack}" = '' ]; then
+  git config --add "remote.${server}_${repo}.receivepack" "${remote_oef_dir}/git-receive-pack"
+  if [ $? -gt 0 ]; then
+    echo "Unable to add configuration for remote.${server}_${repo}.receive-pack" >&2
+    exit 4
+  fi
+fi
+
+active_branch=$(git rev-parse --abbrev-ref HEAD)
+if [ $? -gt 0 ]; then
+  echo "Unable to determine current local branch" >&2
+  exit 8
+fi
+
+#
+# Add any uncommitted changes to active_branch
+#
+git add .
+if [ $? -gt 0 ]; then
+  echo "Problems trying to add to ${active_branch}" >&2
+  exit 4
+fi
+git commit -m 'temporary commit' >/dev/null
+
+#
+# Could get a '1' indicating nothing to commit - this is not an error
+#
+if [ $? -eq 0 ]; then
+  commit=1
+else
+  if [ $? -gt 1 ]; then
+    echo "Problems trying to commit files to ${active_branch}" >&2
+    exit 4
+  else
+    commit=0
+  fi
+fi
+
+seconds_commit=$(date '+%s')
+
+git remote set-branches "${server}_${repo}" "${active_branch}" >/dev/null
+if [ $? -gt 0 ]; then
+  echo "Set up repository ${repo} on ${server_root}"
+  ssh "${server}" mkdir -p "${server_root}/${repo} && cd ${server_root}/${repo} && ${remote_oef_dir}/git init && ${remote_oef_dir}/git config --local receive.denyCurrentBranch updateInstead"
+  git remote set-branches "${server}_${repo}" "${active_branch}" >/dev/null
+  if [ $? -gt 1 ]; then
+    reset_head ${commit} "${active_origin_url}"
+    exit 4
+  fi
+fi
+
+#
+# msf - If you are not using fast-forwarding, you may have to do a force-lease
+# to publish your changes to github.ibm.com
+# If you want to avoid this and are ok with it, you can do:
+#   git config pull.ff true
+# to specify fast-forwarding.
+# You can also do it globally if you want, e.g.
+#   git config --global pull.ff true
+# See: https://thelinuxcode.com/use-pull-rebase-false-pull-ff-true-git/ 
+
+#
+# The --force-with-lease is required because we may have reset the head one or more times
+# If you get a message about 'stale info' then this might require 'git remote prune origin'
+# (msf - this particular 'git push' needs some more homework)
+#
+vecho "Synchronize changes from ${client_root} to ${server}"
+
+git push --force-with-lease --set-upstream "${server}_${repo}" >/dev/null 2>/tmp/err
+if [ $? -gt 1 ]; then
+  echo "Unable to push to remote - try to set up repository ${repo} on ${server_root}"
+  ssh "${server}" mkdir -p "${server_root}/${repo} && cd ${server_root}/${repo} && ${remote_oef_dir}/git init && ${remote_oef_dir}/git config --local receive.denyCurrentBranch updateInstead"
+  if [ $? -gt 0 ]; then
+    echo "Failed to push to remote repo: ${server}_${repo} and attempt to create repository on server failed." >&2
+    reset_head ${commit} "${active_origin_url}"
+    exit 4
+  fi
+  git push --force --set-upstream "${server}_${repo}" >/dev/null 2>/tmp/err
+  if [ $? -gt 1 ]; then
+    echo "Unable to push to ${server}_${repo}." >&2
+    reset_head ${commit} "${active_origin_url}"
+    exit 4
+  fi
+fi
+
+seconds_sync=$(date '+%s')
+
+vecho "Repository synchronized:" $(date)
+
+vecho "Run build ${remote_build_tool} on ${server} in directory ${server_root}"
+
+bld_err="/tmp/grub.${server}_${repo}.err"
+bld_out="/tmp/grub.${server}_${repo}.out"
+ssh "${server}" ${remote_build_tool} "${server_root} ${repo} ${active_branch} ${remote_oef_dir} ${bld_out} ${bld_err}"
+if [ $? -gt 0 ]; then
+  echo "ssh command <ssh ${server} ${remote_build_tool} ${server_root} ${repo} ${active_branch} ${remote_oef_dir} ${bld_out} ${bld_err}> failed.\n" >&2
+fi
+
+seconds_build=$(date '+%s')
+
+vecho "Build complete:" $(date)
+
+#
+# Run the SFTP's in the background so they can process in parallel
+#
+bldout_err=$(sftp "${server}:${bld_out}" /tmp 2>&1) &
+pid_out=$!
+blderr_err=$(sftp "${server}:${bld_err}" /tmp 2>&1) &
+pid_err=$!
+wait ${pid_out} ${pid_err} # put the specific jobs in so that the RC will get set if the last command fails
+rc=$?
+if [ $rc -gt 0 ]; then
+  echo "SFTP failed to download one or both of ${bld_out} and ${bld_err} from ${server}. rc ${rc}" >&2
+  echo "${bldout_out}" >&2
+  echo "${blderr_err}" >&2
+  exit 4
+fi
+
+seconds_download=$(date '+%s')
+
+out=$(cat ${bld_out})
+if [ "${out}" != "" ]; then
+  echo "Output downloaded to ${bld_out}"
+else
+  echo "No output from build."
+fi
+
+err=$(cat ${bld_err})
+if [ "${err}" != "" ]; then
+  echo "Errors downloaded to ${bld_err}"
+  echo "${err}" >&2
+else
+  echo "No errors from build."
+fi
+
+reset_head ${commit} "${active_origin_url}"
+
+seconds_reset=$(date '+%s')
+
+vecho "Finish:" $(date)
+
+vecho "Times: "
+vecho " git commit:   " $((seconds_commit-$seconds_start)) "s"
+vecho " git sync:     " $((seconds_sync-$seconds_commit)) "s"
+vecho " remote build: " $((seconds_build-$seconds_sync)) "s"
+vecho " download:     " $((seconds_download-$seconds_build)) "s"
+vecho " reset:        " $((seconds_reset-$seconds_download)) "s"
+vecho "Total time:    " $((seconds_reset-$seconds_start)) "s"
