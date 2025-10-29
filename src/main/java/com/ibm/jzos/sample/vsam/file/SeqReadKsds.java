@@ -19,6 +19,7 @@
 package com.ibm.jzos.sample.vsam.file;
 
 import com.ibm.jzos.ZFile;
+import com.ibm.jzos.ZUtil; 
 
 /**
  * Sample program that reads records in a VSAM using {@link 
@@ -75,7 +76,7 @@ public class SeqReadKsds {
             
             // read the records sequentially
             while (zfile.read(recBuf) != -1) {
-                String record = new String(recBuf);
+                String record = new String(recBuf, ZUtil.getDefaultPlatformEncoding());
                 System.out.println("Record=" + record);
             }
         }

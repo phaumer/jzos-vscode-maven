@@ -19,6 +19,7 @@
 package com.ibm.jzos.sample.vsam.file;
 
 import com.ibm.jzos.ZFile;
+import com.ibm.jzos.ZUtil; 
 
 /**
  * Sample program that updates records in a VSAM using {@link
@@ -92,7 +93,7 @@ public class UpdateKsdsRecords {
 
                 // read the record
                 nRead = zfile.read(recBuf);
-                String record50000005 = new String(recBuf);
+                String record50000005 = new String(recBuf, ZUtil.getDefaultPlatformEncoding());
                 System.out.println("nRead=" + nRead + " Record with Primary Key 50000005=" + record50000005);
 
                 // build data to update

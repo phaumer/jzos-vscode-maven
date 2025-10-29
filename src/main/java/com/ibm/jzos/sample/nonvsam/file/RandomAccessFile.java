@@ -19,6 +19,7 @@
 package com.ibm.jzos.sample.nonvsam.file;
 
 import com.ibm.jzos.ZFile;
+import com.ibm.jzos.ZUtil; 
 
 /**
  * This sample demonstrates how to randomly access a file.
@@ -53,27 +54,27 @@ public class RandomAccessFile {
             byte[] recBuf = new byte[dsnFile.getLrecl()];
 
             int bytesRead = dsnFile.read(recBuf);
-            System.out.println("bytesRead=" + bytesRead + " 1st record (record 0):" + new String(recBuf));
+            System.out.println("bytesRead=" + bytesRead + " 1st record (record 0):" + new String(recBuf, ZUtil.getDefaultPlatformEncoding()));
 
             dsnFile.seek(-1, ZFile.SEEK_END);
 
             bytesRead = dsnFile.read(recBuf);
-           	System.out.println("bytesRead=" + bytesRead + " last record (record n-1):" + new String(recBuf));
+           	System.out.println("bytesRead=" + bytesRead + " last record (record n-1):" + new String(recBuf, ZUtil.getDefaultPlatformEncoding()));
 
             dsnFile.seek(1, ZFile.SEEK_SET);
 
             bytesRead = dsnFile.read(recBuf); 
-            System.out.println("bytesRead=" + bytesRead + " 2nd record (record 1):" + new String(recBuf));
+            System.out.println("bytesRead=" + bytesRead + " 2nd record (record 1):" + new String(recBuf, ZUtil.getDefaultPlatformEncoding()));
 
             dsnFile.seek(0, ZFile.SEEK_SET);
 
             bytesRead = dsnFile.read(recBuf); 
-            System.out.println("bytesRead=" + bytesRead + " 1st record (record 0):" + new String(recBuf));
+            System.out.println("bytesRead=" + bytesRead + " 1st record (record 0):" + new String(recBuf, ZUtil.getDefaultPlatformEncoding()));
 
             dsnFile.seek(5, ZFile.SEEK_SET);
 
             bytesRead = dsnFile.read(recBuf); 
-            System.out.println("bytesRead=" + bytesRead + " 6th record (record 5):" + new String(recBuf));
+            System.out.println("bytesRead=" + bytesRead + " 6th record (record 5):" + new String(recBuf, ZUtil.getDefaultPlatformEncoding()));
 
             // rewind the cursor to the beginning of the file
             dsnFile.rewind();
@@ -82,7 +83,7 @@ public class RandomAccessFile {
             bytesRead = dsnFile.read(recBuf);
 
             while (bytesRead != -1) {
-                System.out.println("bytesRead=" + bytesRead + " data:" + new String(recBuf));
+                System.out.println("bytesRead=" + bytesRead + " data:" + new String(recBuf, ZUtil.getDefaultPlatformEncoding()));
                 bytesRead = dsnFile.read(recBuf);
             }
         }
