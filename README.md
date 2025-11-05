@@ -1,10 +1,10 @@
 ## JZOS with Maven Example
 
-Example showing how to develop Java applications for z/OS with Maven and the [JZOS library](https://www.ibm.com/docs/en/semeru-runtime-ce-z/11?topic=guide-managing-jzos-dependencies-by-using-maven) using VS Code.
+Example showing how to develop Java applications for z/OS with Maven and the [JZOS library](https://www.ibm.com/docs/en/semeru-runtime-ce-z/21?topic=guide-managing-jzos-dependencies-by-using-maven) using VS Code.
 
 ## Preparing your z/OS system
 
-- Get access to a z/OS system with Java 11 or 17 installed. Make sure this Java is configured for your PATH and JAVA_HOME. We recommend [IBM Wazi as a Service](https://www.ibm.com/cloud/wazi-as-a-service) systems.
+- Get access to a z/OS system with Java 21 installed. Make sure this Java is configured for your PATH and JAVA_HOME. We recommend [IBM Wazi as a Service](https://www.ibm.com/cloud/wazi-as-a-service) systems. You can also use an earlier version of Java such as 11 or 17. Just adjust the target version in the Maven POM file.
 - Configure access to ssh; ideally password-less ssh
 - Make sure you can use either [z/OSMF or RSE API on your system](https://ibm.github.io/zopeneditor-about/Docs/setup_integration.html) so it can be used with Zowe CLI and Zowe Explorer.
 - Create a directory for the Java executable to be uploaded. Default is `~/projects/java`. Adjust the script of you choose a different path.
@@ -12,8 +12,8 @@ Example showing how to develop Java applications for z/OS with Maven and the [JZ
 
 ## Setting up VS Code
 
-- Install [Microsoft Visual Studio Code](https://code.visualstudio.com/) version 1.83.1 or newer
-- Install [IBM Semeru Java Development Kit](https://developer.ibm.com/languages/java/semeru-runtimes/downloads/) v11 or 17. Make sure this Java is configured for your PATH and JAVA_HOME.
+- Install [Microsoft Visual Studio Code](https://code.visualstudio.com/) version 1.105 or newer
+- Install [IBM Semeru Java Development Kit](https://developer.ibm.com/languages/java/semeru-runtimes/downloads/) v21. Make sure this Java is configured for your PATH and JAVA_HOME.
 - Install [Maven](https://maven.apache.org/download.cgi).
 - Clone and open this repository and install all recommend VS extensions (see popup dialog).
 - To use the automation scripts install [Zowe CLI](https://docs.zowe.org/stable/user-guide/cli-installcli/) and create a [Zowe CLI profile in VS Code Zowe Explorer](https://ibm.github.io/zopeneditor-about/Docs/connect_to_zos_with_zowe_explorer_e2e.html) to your system and ensure it works.
